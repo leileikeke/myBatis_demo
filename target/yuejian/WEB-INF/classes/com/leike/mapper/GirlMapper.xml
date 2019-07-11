@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.leike.mapper.GirlMapper">
+    <insert id="insert">
+        insert into girl(name,flower,birthday) values (#{name },#{flower},#{birthday})
+    </insert>
+
+    <select id="queryByid" resultType="com.leike.pojo.Girl">
+        select * from girl where id=#{id}
+    </select>
+    <select id="queryByname" resultType="com.leike.pojo.Girl">
+        select * from girl where name=#{name}
+    </select>
+    <select id="queryAll" resultType="com.leike.pojo.Girl">
+        select * from girl;
+    </select>
+    <select id="queryBynameaAndFlower" resultType="com.leike.pojo.Girl">
+        select * from girl where name = #{param1} and flower = #{param2}
+    </select>
+    <select id="queryAllByNameAndFlower" resultType="com.leike.pojo.Girl">
+        select * from girl
+        where name = #{name} and flower = #{flower}
+    </select>
+    <select id="queryAllByNameAndFlower2" resultType="com.leike.pojo.Girl">
+        select * from girl
+        where name = #{name} and flower = #{flower}
+    </select>
+    <select id="queryByAB" resultType="com.leike.pojo.Girl">
+        select * from girl
+        where name = #{a.name} and flower = #{b.flower}
+    </select>
+
+
+</mapper>

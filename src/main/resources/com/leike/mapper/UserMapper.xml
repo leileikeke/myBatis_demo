@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.leike.mapper.UserMapper">
+
+    <resultMap id="DatabaseTemp" type="com.leike.pojo.UserWithDetail">
+        <result property="id" column="uid"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="createDate" column="createDate"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <!--第一种方法-->
+    <!--官方推荐-->
+    <resultMap id="UserWithDetailMap" extends="DatabaseTemp" type="com.leike.pojo.UserWithDetail">
+        <!--已经继承了-->
+        <association property="userDetail" javaType="com.leike.pojo.UserDetail">
+            <id property="id" column="udId"/>
+            <result property="address" column="address"/>
+            <result property="cid" column="cid"/>
+        </association>
+    </resultMap>
+
+    <!--第二种方法   连缀写法-->
+    <resultMap id="UserWithDetailMap1" extends="DatabaseTemp" type="com.leike.pojo.UserWithDetail">
+        <result property="userDetail.id" column="udId"/>
+        <result property="userDetail.address" column="address"/>
+        <result property="userDetail.cid" column="cid"/>
+    </resultMap>
+    <!--第三种方法 分布查询-->
+    <resultMap id="UserWithDetailMap2" extends="DatabaseTemp" type="com.leike.pojo.UserWithDetail" >
+        <association property="userDetail" select="com.leike.mapper.UserDetailMapper.queryByUid" column="uid"></association>
+    </resultMap>
+
+    <select id="queryById" resultType="com.leike.pojo.User">
+        select *
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="queryByIdAndDetail" resultMap="UserWithDetailMap2">
+        select u1.id as uid,
+               u1.phone,
+               u1.password,
+               u1.createDate,
+               u1.status,
+               u2.id as udId,
+               u2.uid as udUid,
+               u2.address,
+               u2.cid
+        from user as u1
+                 join userdetail as u2
+                      on u1.id = u2.uid
+                          and u1.id = #{id}
+    </select>
+</mapper>

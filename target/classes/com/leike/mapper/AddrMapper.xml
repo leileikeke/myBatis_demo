@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.leike.mapper.AddrMapper">
+    <!--开启二级缓存-->
+    <cache
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+    <insert id="insert" parameterType="addresses">
+        insert into addresses(country,city,state,street,zip) values (#{country},#{city},#{state},#{street},#{zip})
+    </insert>
+    <update id="updateAddr" parameterType="addresses">
+        update addresses
+        <set>
+            <if test="city != null and city != ''">city = #{city},</if>
+            <if test="country != null and country != ''">country = #{country},</if>
+            <if test="street != null and street != ''">street = #{street},</if>
+            <if test="state != null and state != ''">state = #{state},</if>
+            <if test="zip != null and zip != ''">zip = #{zip},</if>
+        </set>
+        <where>
+            addrId = #{addrId}
+        </where>
+
+    </update>
+
+    <select id="queryAll" resultType="com.leike.pojo.Addresses">
+        select * from addresses
+    </select>
+
+    <select id="queryByCityAndcAndCountry" resultType="com.leike.pojo.Addresses">
+        select * from addresses
+        <where>
+            <if test="city !=null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="country != null ">
+                and country = #{country}
+            </if>
+        </where>
+    </select>
+    <select id="queryTestChoose" resultType="com.leike.pojo.Addresses">
+        select * from addresses
+        <where>
+
+            <choose>
+                <when test="city != null and city != ''">and city = #{city}</when>
+                <when test="country != null and country != ''">and country = #{country}</when>
+                <otherwise>
+                    and addrId = 1
+                </otherwise>
+            </choose>
+
+        </where>
+
+
+    </select>
+    <select id="queryByItems" resultType="com.leike.pojo.Addresses">
+        select * from addresses
+        <where>
+            addrId in
+            <foreach collection="list" open="(" close=")" item="item" separator="," index="index">
+                #{item}+#{index}
+            </foreach>
+
+
+        </where>
+    </select>
+    <select id="queryByCity" resultType="com.leike.pojo.Addresses">
+    <bind name="_city" value="'%'+city+'%'"/>
+        select * from addresses
+        where city
+        like #{_city}
+    </select>
+    
+    <sql id="baseTest">
+        country,city,state
+    </sql>
+    <select id="queryByAddrId" resultType="com.leike.pojo.Addresses">
+        select 
+        <include refid="baseTest"></include>
+        from addresses
+        where addrId = #{addrId}
+
+    </select>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--    资源文件-->
+    <!--
+        结论:
+            外部的properties文件里面的属性的优先级>>>properties里面的子节点的属性
+    -->
+    <properties resource="jdbc.properties">
+        <!--        <property name="username" value="root"/>-->
+    </properties>
+
+    <settings>
+        <!--  开启数据库的默认下划线命名方式转换为JavaBean的驼峰命名  true解决类型不匹配问题    -->
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+        <!--  开启数据库日志-->
+        <setting name="logImpl" value="LOG4J"/>
+        <!--  开启数据库缓冲-->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <package name="com.leike.pojo"/>
+        <!--        类型别名  -->
+        <!--            com.leike.pojo.xxx -> xxx-->
+        <!--        <typeAlias type="com.leike.pojo.Girl" alias="girl"/>-->
+
+        <!--        <typeAlias type="com.leike.pojo.Girl" alias="girl"></typeAlias>-->
+    </typeAliases>
+
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="UNPOOLED">
+                <property name="url" value="${url}"/>
+                <property name="driver" value="${driver}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--        第一种-->
+        <!--        <mapper resource="com/leike/mapper/GirlMapper.xml"></mapper>-->
+        <!--        第二种-->
+        <!--        <mapper url="file:\C:\Users\leike\IdeaProjects\yuejian\src\main\resources\com\leike\mapper\GirlMapper.xml"></mapper>-->
+        <!--        第三种-->
+        <!--        <mapper class="com.leike.mapper.GirlMapper"></mapper>-->
+        <!--        第四种-->
+        <package name="com.leike.mapper"/>
+    </mappers>
+
+</configuration>
