@@ -171,7 +171,6 @@ public class Test2 {
         SqlSession sqlsession2 = MybatisUtil.getSession();
         AddrMapper mapper = sqlsession.getMapper(AddrMapper.class);
         AddrMapper mapper2 = sqlsession2.getMapper(AddrMapper.class);
-
         mapper.queryByAddrId(1);
         sqlsession.close();
         mapper2.queryByAddrId(1);
