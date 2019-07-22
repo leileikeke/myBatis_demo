@@ -79,7 +79,7 @@ public class Test2 {
         Addresses addresses = new Addresses();
         addresses.setAddrId(1);
         addresses.setZip("432709");
-        addresses.setStreet("广水");
+        addresses.setStreet("武昌");
         addresses.setCountry("武汉");
         addresses.setState("湖北");
         addresses.setCity("中国");
